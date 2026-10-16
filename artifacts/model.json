@@ -1,0 +1,8 @@
+{
+  "data": "synthetic teacher-generated tabular classification",
+  "train_examples": 10000,
+  "test_examples": 2000,
+  "accuracy": 0.9164999723434448,
+  "epochs": 15,
+  "training_seconds": 0.5146567379999851
+}
