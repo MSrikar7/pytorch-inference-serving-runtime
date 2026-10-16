@@ -162,3 +162,18 @@ The training script creates **10,000 synthetic training examples** and **2,000 s
 **Project focus:** ML systems engineering · inference serving · asynchronous scheduling · performance measurement · resilient API design
 
 *This is a production-inspired systems prototype. It does not claim production deployment, distributed multi-node operation, or validated GPU performance.*
+
+
+## Continuous integration and reproducible benchmarking
+
+[![ML Serving CI](https://github.com/MSrikar7/pytorch-inference-serving-runtime/actions/workflows/ci.yml/badge.svg)](https://github.com/MSrikar7/pytorch-inference-serving-runtime/actions/workflows/ci.yml)
+
+GitHub Actions trains a test model, executes the pytest suite on Python 3.10 and 3.11, then records a local microbatch comparison artifact on Python 3.11. CI does not assert a fixed performance improvement: shared-runner hardware and scheduling vary.
+
+```bash
+python training/train.py
+python -m pytest -q tests
+python -m benchmarks.compare --requests 300 --concurrency 24 --trials 3
+```
+
+The comparison uses the same trained model, inputs and request concurrency for both configurations. It saves `results/comparison.json` and reports median throughput and p95 latency across trials. This is an in-process benchmark, not an end-to-end network benchmark.
